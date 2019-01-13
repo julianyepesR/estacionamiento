@@ -42,5 +42,4 @@ test {
 		append = false
 		destinationFile = file("build/jacoco/test.exec")
 	}
-	reports.junitXml.destination =  file("build/jacoco/test-results")
 }
