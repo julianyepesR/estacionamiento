@@ -1,12 +1,16 @@
 package estacionamiento.dominio.interfaces;
 
 import estacionamiento.dominio.modulos.*;
+import estacionamiento.persistencia.entidad.VehiculoEntity;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 public interface VehiculoInterface {
-	
+
 	Vehiculo obtenerVehiculo(String placa);
+
+	VehiculoEntity obtenerVehiculoEntity(String placa);
 
 	List<Vehiculo> obtenerListaDeVehiculos();
 
@@ -16,4 +20,5 @@ public interface VehiculoInterface {
 
 	void agregarVehiculo(Vehiculo vehiculo);
 
+	void cambiarEstadoDeVehiculo(VehiculoEntity vehiculoEntity,long costo);
 }

@@ -12,7 +12,6 @@ public class VehiculoBuilder {
 	                    vehiculoEntity.getCilindraje(),
 	                    vehiculoEntity.getCosto(),
 	                    vehiculoEntity.getPlaca(),
-	                    vehiculoEntity.getNombreCliente(),
 	                    vehiculoEntity.getFechaDeSalida(),
 	                    vehiculoEntity.getFechaDeEntrada(),
 	                    vehiculoEntity.getEstadoActual(),
@@ -30,7 +29,6 @@ public class VehiculoBuilder {
 	            vehiculoEntity.setCosto(vehiculo.getCilindraje());
 	            vehiculoEntity.setEstadoActual(vehiculo.getEstadoActual());
 	            vehiculoEntity.setFechaDeEntrada(vehiculo.getFechaDeEntrada());
-	            vehiculoEntity.setNombreCliente(vehiculo.getCliente());
 	            vehiculoEntity.setPlaca(vehiculo.getPlaca());
 	            vehiculoEntity.setTipoDeVehiculo(vehiculo.getTipoDeVehiculo());
 	        }

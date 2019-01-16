@@ -10,7 +10,6 @@ public class Vehiculo {
 	 private int cilindraje;
 	    private double costo;
 	    private String placa;
-	    private String cliente;
 	    private Date fechaDeSalida;
 	    private Date fechaDeEntrada;
 	    private EstadoVehiculoEnum estadoActual;
@@ -18,11 +17,10 @@ public class Vehiculo {
 
 	    public  Vehiculo(){};
 
-	    public Vehiculo(int cilindraje, double costo, String placa, String cliente, Date fechaDeSalida, Date fechaDeEntrada, EstadoVehiculoEnum estadoActual, VehiculoEnum tipoDeVehiculo) {
+	    public Vehiculo(int cilindraje, double costo, String placa, Date fechaDeSalida, Date fechaDeEntrada, EstadoVehiculoEnum estadoActual, VehiculoEnum tipoDeVehiculo) {
 	        this.cilindraje = cilindraje;
 	        this.costo = costo;
 	        this.placa = placa;
-	        this.cliente = cliente;
 	        this.fechaDeSalida = fechaDeSalida;
 	        this.fechaDeEntrada = fechaDeEntrada;
 	        this.estadoActual = estadoActual;
@@ -51,14 +49,6 @@ public class Vehiculo {
 
 		public void setPlaca(String placa) {
 			this.placa = placa;
-		}
-
-		public String getCliente() {
-			return cliente;
-		}
-
-		public void setCliente(String cliente) {
-			this.cliente = cliente;
 		}
 
 		public Date getFechaDeSalida() {

@@ -8,18 +8,16 @@ import java.util.Date;
 @Entity
 @Table(name="Vehiculo")
 @NamedQueries({
-        @NamedQuery(name = "Vehiculo.findAll", query = "SELECT vehiculo from VehiculoEntity vehiculo"),
-        @NamedQuery(name = "Vehiculo.findByPlaca", query = "SELECT vehiculo from VehiculoEntity vehiculo where vehiculo.placa = :placa"),
-        @NamedQuery(name = "Vehiculo.findallMotos", query = "SELECT vehiculo from VehiculoEntity vehiculo where vehiculo.tipoDeVehiculo = :tipoDeVehiculo"),
-        @NamedQuery(name = "Vehiculo.findallCarros", query = "SELECT vehiculo from VehiculoEntity vehiculo where vehiculo.tipoDeVehiculo = :tipoDeVehiculo")
+        @NamedQuery(name = "Vehiculo.findAll", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.estadoActual = :estadoActual"),
+        @NamedQuery(name = "Vehiculo.findByPlaca", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.placa = :placa AND vehiculo.estadoActual = :estadoActual"),
+        @NamedQuery(name = "Vehiculo.findallMotos", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.tipoDeVehiculo = :tipoDeVehiculo AND vehiculo.estadoActual = :estadoActual"),
+        @NamedQuery(name = "Vehiculo.findallCarros", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.tipoDeVehiculo = :tipoDeVehiculo AND vehiculo.estadoActual = :estadoActual")
 })
 public class VehiculoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String nombreCliente;
 
     private VehiculoEnum tipoDeVehiculo;
 
@@ -33,7 +31,7 @@ public class VehiculoEntity {
 
     private String placa;
 
-    private double costo;
+    private long costo;
 
     public VehiculoEntity(){}
 
@@ -51,14 +49,6 @@ public class VehiculoEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNombreCliente() {
-        return nombreCliente;
-    }
-
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
     }
 
     public VehiculoEnum getTipoDeVehiculo() {
@@ -101,11 +91,11 @@ public class VehiculoEntity {
         this.fechaDeSalida = fechaDeSalida;
     }
 
-    public double getCosto() {
+    public long getCosto() {
         return costo;
     }
 
-    public void setCosto(double costo) {
+    public void setCosto(long costo) {
         this.costo = costo;
     }
 }
