@@ -1,10 +1,6 @@
 package unitarias;
 
-import dataBuilder.TestUtils;
 import estacionamiento.dominio.controladores.VehiculoController;
-import estacionamiento.dominio.enumeraciones.VehiculoEnum;
-import estacionamiento.dominio.modulos.Vehiculo;
-import estacionamiento.persistencia.entidad.VehiculoEntity;
 import estacionamiento.persistencia.sistema.SistemaDePersistencia;
 import org.junit.After;
 import org.junit.Before;
