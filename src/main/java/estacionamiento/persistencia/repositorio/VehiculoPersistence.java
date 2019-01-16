@@ -26,6 +26,8 @@ public class VehiculoPersistence implements VehiculoInterface{
     private static final String FIND_ALL_MOTOS = "Vehiculo.findallMotos";
     private static final String FIND_ALL_CARROS = "Vehiculo.findallCarros";
     private static final EstadoVehiculoEnum ESTADO_FUERA = EstadoVehiculoEnum.EN_DEUDA;
+    private static final String ESTADO_ACTUAL = "estadoActual";
+    private static final String TIPO_DE_VEHICULO = "tipoDeVehiculo";
 
     Logger logger = LoggerFactory.getLogger(VehiculoPersistence.class);
 
@@ -38,7 +40,7 @@ public class VehiculoPersistence implements VehiculoInterface{
     @Override
     public Vehiculo obtenerVehiculo(String placa){
 
-        Query query = entityManager.createNamedQuery(FIND_BY_PLACA).setParameter("placa",placa).setParameter("estadoActual",ESTADO_FUERA);
+        Query query = entityManager.createNamedQuery(FIND_BY_PLACA).setParameter("placa",placa).setParameter(ESTADO_ACTUAL,ESTADO_FUERA);
         try{
             VehiculoEntity vehiculoEntity = (VehiculoEntity) query.getSingleResult();
             return VehiculoBuilder.convertirADominio(vehiculoEntity);
@@ -52,7 +54,7 @@ public class VehiculoPersistence implements VehiculoInterface{
     @Override
     public VehiculoEntity obtenerVehiculoEntity(String placa){
 
-        Query query = entityManager.createNamedQuery(FIND_BY_PLACA).setParameter("placa",placa).setParameter("estadoActual",ESTADO_FUERA);
+        Query query = entityManager.createNamedQuery(FIND_BY_PLACA).setParameter("placa",placa).setParameter(ESTADO_ACTUAL,ESTADO_FUERA);
         try{
             return (VehiculoEntity) query.getSingleResult();
         }catch (Exception e){
@@ -65,7 +67,7 @@ public class VehiculoPersistence implements VehiculoInterface{
     @Override
     public List<Vehiculo> obtenerListaDeVehiculos(){
         List<Vehiculo> listaDeVehiculos = new LinkedList<>();
-        Query query = entityManager.createNamedQuery(FIND_ALL).setParameter("estadoActual",ESTADO_FUERA);
+        Query query = entityManager.createNamedQuery(FIND_ALL).setParameter(ESTADO_ACTUAL,ESTADO_FUERA);
         try{
             List<VehiculoEntity> vehiculoEntityList = (List<VehiculoEntity>) query.getResultList();
             for(VehiculoEntity vehiculoEntity : vehiculoEntityList){
@@ -81,7 +83,7 @@ public class VehiculoPersistence implements VehiculoInterface{
     @Override
     public List<Vehiculo> obtenerListaDeMotos(){
         List<Vehiculo> listaDeMotos = new LinkedList<>();
-        Query query = entityManager.createNamedQuery(FIND_ALL_MOTOS).setParameter("tipoDeVehiculo", VehiculoEnum.MOTO).setParameter("estadoActual",ESTADO_FUERA);
+        Query query = entityManager.createNamedQuery(FIND_ALL_MOTOS).setParameter(TIPO_DE_VEHICULO, VehiculoEnum.MOTO).setParameter(ESTADO_ACTUAL,ESTADO_FUERA);
         try{
             List<VehiculoEntity> vehiculoEntityList = (List<VehiculoEntity>) query.getResultList();
             for(VehiculoEntity vehiculoEntity : vehiculoEntityList){
@@ -97,7 +99,7 @@ public class VehiculoPersistence implements VehiculoInterface{
     @Override
     public List<Vehiculo> obtenerListaDeCarros(){
         List<Vehiculo> listaDeCarros = new LinkedList<>();
-        Query query = entityManager.createNamedQuery(FIND_ALL_CARROS).setParameter("tipoDeVehiculo", VehiculoEnum.CARRO).setParameter("estadoActual",ESTADO_FUERA);
+        Query query = entityManager.createNamedQuery(FIND_ALL_CARROS).setParameter(TIPO_DE_VEHICULO, VehiculoEnum.CARRO).setParameter(ESTADO_ACTUAL,ESTADO_FUERA);
         try{
             List<VehiculoEntity> vehiculoEntityList = (List<VehiculoEntity>) query.getResultList();
             for(VehiculoEntity vehiculoEntity : vehiculoEntityList){

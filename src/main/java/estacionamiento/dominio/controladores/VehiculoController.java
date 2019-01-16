@@ -83,7 +83,7 @@ public class VehiculoController {
 
     private String crearJson(List<Vehiculo> listaDeVehiculos){
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		HashMap<String, JSONObject> map = new HashMap<String, JSONObject>();
+		HashMap<String, JSONObject> map = new HashMap<>();
 		JSONArray arr = new JSONArray();
 		int id = 1;
 		for(Vehiculo vehiculo : listaDeVehiculos) {

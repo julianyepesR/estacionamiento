@@ -9,7 +9,7 @@ public class ConexionJPA {
     private static EntityManagerFactory entityManagerFactory;
 
     public ConexionJPA(){
-        entityManagerFactory = Persistence.createEntityManagerFactory(ESTACIONAMIENTO);
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(ESTACIONAMIENTO);
     }
 
     public EntityManager createEntityManager() {

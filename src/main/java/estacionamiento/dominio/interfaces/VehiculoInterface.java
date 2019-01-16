@@ -2,7 +2,6 @@ package estacionamiento.dominio.interfaces;
 
 import estacionamiento.dominio.modulos.*;
 import estacionamiento.persistencia.entidad.VehiculoEntity;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

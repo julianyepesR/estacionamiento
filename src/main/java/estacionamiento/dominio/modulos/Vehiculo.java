@@ -15,7 +15,7 @@ public class Vehiculo {
 	    private EstadoVehiculoEnum estadoActual;
 	    private VehiculoEnum tipoDeVehiculo;
 
-	    public  Vehiculo(){};
+	    public  Vehiculo(){}
 
 	    public Vehiculo(int cilindraje, double costo, String placa, Date fechaDeSalida, Date fechaDeEntrada, EstadoVehiculoEnum estadoActual, VehiculoEnum tipoDeVehiculo) {
 	        this.cilindraje = cilindraje;
