@@ -1,11 +1,11 @@
-package estacionamiento.dominio.enumeraciones;
+package estacionamiento.enumeraciones;
 
-public enum VehiculoEnum {
+public enum TipoVehiculoEnum {
 	CARRO("Carro"),MOTO("Moto");
 
     private String tipoDeVehiculo;
 
-    private VehiculoEnum(String tipoDeVehiculo){
+    TipoVehiculoEnum(String tipoDeVehiculo){
         this.tipoDeVehiculo = tipoDeVehiculo;
     }
 

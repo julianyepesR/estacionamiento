@@ -1,6 +1,7 @@
-package estacionamiento.persistencia.entidad;
+package estacionamiento.modelo.entidad;
 
-import estacionamiento.dominio.enumeraciones.*;
+import estacionamiento.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.enumeraciones.TipoVehiculoEnum;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class VehiculoEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private VehiculoEnum tipoDeVehiculo;
+    private TipoVehiculoEnum tipoDeVehiculo;
 
     private EstadoVehiculoEnum estadoActual;
 
@@ -51,11 +52,11 @@ public class VehiculoEntity {
         this.id = id;
     }
 
-    public VehiculoEnum getTipoDeVehiculo() {
+    public TipoVehiculoEnum getTipoDeVehiculo() {
         return tipoDeVehiculo;
     }
 
-    public void setTipoDeVehiculo(VehiculoEnum tipoDeVehiculo) {
+    public void setTipoDeVehiculo(TipoVehiculoEnum tipoDeVehiculo) {
         this.tipoDeVehiculo = tipoDeVehiculo;
     }
 
@@ -97,5 +98,15 @@ public class VehiculoEntity {
 
     public void setCosto(long costo) {
         this.costo = costo;
+    }
+
+    public VehiculoEntity(int cilingraje, long costo, String placa, Date fechaDeSalida, Date fechaDeEntrada, EstadoVehiculoEnum estadoActual, TipoVehiculoEnum tipoDeVehiculo){
+        this.cilindraje = cilingraje;
+        this.costo = costo;
+        this.placa = placa;
+        this.fechaDeSalida = fechaDeSalida;
+        this.fechaDeEntrada = fechaDeEntrada;
+        this.estadoActual = estadoActual;
+        this.tipoDeVehiculo = tipoDeVehiculo;
     }
 }

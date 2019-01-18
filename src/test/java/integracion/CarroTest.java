@@ -1,17 +1,17 @@
 package integracion;
 
 import dataBuilder.TestUtils;
-import estacionamiento.dominio.controladores.VehiculoController;
-import estacionamiento.dominio.enumeraciones.EstadoVehiculoEnum;
-import estacionamiento.dominio.enumeraciones.VehiculoEnum;
-import estacionamiento.dominio.modulos.Vehiculo;
-import estacionamiento.persistencia.repositorio.VehiculoPersistence;
-import estacionamiento.persistencia.sistema.SistemaDePersistencia;
-import org.json.JSONObject;
-import org.junit.After;
+import estacionamiento.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.enumeraciones.TipoVehiculoEnum;
+import estacionamiento.modelo.entidad.VehiculoEntity;
+import estacionamiento.modelo.interfaces.VehiculoInterface;
+import estacionamiento.modelo.servicios.PersistenciaImplementacion;
+import estacionamiento.modelo.servicios.VehiculoImplementacion;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 
 import java.util.Calendar;
@@ -28,24 +28,16 @@ public class CarroTest {
     private static final int CILINDRAJE = 0;
     private static final String TIPO_DE_VEHICULO = "Carro";
 
-    @Autowired
-    private VehiculoPersistence vehiculoPersistence;
-    private VehiculoController vehiculoController;
-    private SistemaDePersistencia sistemaDePersistencia;
+    @Mock
+    private VehiculoInterface vehiculoInterface;
+    private PersistenciaImplementacion persistenciaImplementacion;
+
+    @InjectMocks
+    private VehiculoImplementacion vehiculoImplementacion;
 
     @Before
     public void init(){
-        sistemaDePersistencia = new SistemaDePersistencia();
-
-        vehiculoController = sistemaDePersistencia.obtenerVehiculoController();
-        vehiculoPersistence = sistemaDePersistencia.obtenerVehiculoPersistence();
-
-        sistemaDePersistencia.iniciar();
-    }
-
-    @After
-    public void finish(){
-        sistemaDePersistencia.finalizar();
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
@@ -54,13 +46,13 @@ public class CarroTest {
 
         // act
         String jsonData = "{'tipoDeVehiculo': "+TIPO_DE_VEHICULO+",'cilindraje': "+CILINDRAJE+",'placa': "+PLACA_B+"}";
-        vehiculoController.ingresoDeVehiculo(jsonData);
-        Vehiculo vehiculo = vehiculoPersistence.obtenerVehiculo(PLACA_B);
+        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
+        VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_B);
 
         // assert
-        assertEquals(vehiculo.getCilindraje(),CILINDRAJE);
-        assertEquals(vehiculo.getTipoDeVehiculo(), VehiculoEnum.CARRO);
-        assertEquals(vehiculo.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
+        assertEquals(vehiculoEntity.getCilindraje(),CILINDRAJE);
+        assertEquals(vehiculoEntity.getTipoDeVehiculo(), TipoVehiculoEnum.CARRO);
+        assertEquals(vehiculoEntity.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
     }
 
     @Test
@@ -72,50 +64,50 @@ public class CarroTest {
 
         // act
         String jsonData = "{'tipoDeVehiculo': "+TIPO_DE_VEHICULO+",'cilindraje': "+CILINDRAJE+",'placa': "+PLACA_A+"}";
-        vehiculoController.ingresoDeVehiculo(jsonData);
-        Vehiculo vehiculo = vehiculoPersistence.obtenerVehiculo(PLACA_A);
+        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
+        VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_A);
 
         if( (diaActual == 1 || diaActual == 2) ){
             // assert
-            assertEquals(vehiculo.getCilindraje(),CILINDRAJE);
-            assertEquals(vehiculo.getTipoDeVehiculo(), VehiculoEnum.CARRO);
-            assertEquals(vehiculo.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
+            assertEquals(vehiculoEntity.getCilindraje(),CILINDRAJE);
+            assertEquals(vehiculoEntity.getTipoDeVehiculo(), TipoVehiculoEnum.CARRO);
+            assertEquals(vehiculoEntity.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
         } else {
             // assert
-            assertNull(vehiculo);
+            assertNull(vehiculoEntity);
         }
     }
 
     @Test
     public void calcularCostoCarro(){
         // arrange
-        TestUtils testUtils = new TestUtils(vehiculoPersistence);
-        testUtils.crearVehiculo(VehiculoEnum.CARRO,PLACA_C,CILINDRAJE,3,1);
-        testUtils.crearVehiculo(VehiculoEnum.CARRO,PLACA_D,CILINDRAJE,8,0);
+        TestUtils testUtils = new TestUtils(persistenciaImplementacion);
+        testUtils.crearVehiculo(TipoVehiculoEnum.CARRO,PLACA_C,CILINDRAJE,3,1);
+        testUtils.crearVehiculo(TipoVehiculoEnum.CARRO,PLACA_D,CILINDRAJE,8,0);
 
         // act
         String jsonData1 = "{'placa': "+PLACA_C+"}";
         String jsonData2 = "{'placa': "+PLACA_D+"}";
-        String costo = vehiculoController.calcularCosto(jsonData1);
-        String costo2 = vehiculoController.calcularCosto(jsonData2);
+        String costo = vehiculoImplementacion.calcularCosto(jsonData1);
+        String costo2 = vehiculoImplementacion.calcularCosto(jsonData2);
 
         // assert
         assertEquals("11000",costo);
         assertEquals("8000",costo2);
-        assertEquals(null,vehiculoPersistence.obtenerVehiculo(PLACA_C));
-        assertEquals(null,vehiculoPersistence.obtenerVehiculo(PLACA_D));
+        assertNull(persistenciaImplementacion.obtenerVehiculoEntity(PLACA_C));
+        assertNull(persistenciaImplementacion.obtenerVehiculoEntity(PLACA_D));
     }
 
     @Test
     public void errorEstacionamientoLleno(){
         // arrange
-        TestUtils testUtils = new TestUtils(vehiculoPersistence);
-        testUtils.llenarParqueadero(VehiculoEnum.CARRO);
+        TestUtils testUtils = new TestUtils(persistenciaImplementacion);
+        testUtils.llenarParqueadero(TipoVehiculoEnum.CARRO);
 
         // act
         String jsonData = "{'tipoDeVehiculo': "+TIPO_DE_VEHICULO+",'cilindraje': "+CILINDRAJE+",'placa': "+PLACA_B+"}";
-        vehiculoController.ingresoDeVehiculo(jsonData);
-        Vehiculo vehiculo = vehiculoPersistence.obtenerVehiculo(PLACA_B);
+        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
+        VehiculoEntity vehiculo = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_B);
 
         // assert
         assertNull(vehiculo);
@@ -124,12 +116,12 @@ public class CarroTest {
     @Test
     public void paginaInicial(){
         // arrange
-        TestUtils testUtils = new TestUtils(vehiculoPersistence);
-        testUtils.llenarParqueadero(VehiculoEnum.CARRO);
-        testUtils.llenarParqueadero(VehiculoEnum.MOTO);
+        TestUtils testUtils = new TestUtils(persistenciaImplementacion);
+        testUtils.llenarParqueadero(TipoVehiculoEnum.CARRO);
+        testUtils.llenarParqueadero(TipoVehiculoEnum.MOTO);
 
         // act
-        String listadoJson = vehiculoController.cargarPaginaInicial();
+        String listadoJson = vehiculoImplementacion.cargarPaginaInicial();
         System.out.println(listadoJson);
 
         // assert
