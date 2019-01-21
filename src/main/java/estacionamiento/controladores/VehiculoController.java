@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 @RestController
 public class VehiculoController {
@@ -27,6 +28,7 @@ public class VehiculoController {
         return vehiculoInterface.cargarPaginaInicial();
     }
 
-
+	@GetMapping("/TRM")
+	public String obtenerTRM() throws RemoteException { return vehiculoInterface.obtenerTRM(); }
 
 }

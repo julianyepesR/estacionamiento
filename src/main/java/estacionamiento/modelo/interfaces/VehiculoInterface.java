@@ -1,6 +1,7 @@
 package estacionamiento.modelo.interfaces;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public interface VehiculoInterface {
 
@@ -9,5 +10,7 @@ public interface VehiculoInterface {
     String calcularCosto(String body);
 
     String cargarPaginaInicial();
+
+    String obtenerTRM() throws RemoteException;
 
 }

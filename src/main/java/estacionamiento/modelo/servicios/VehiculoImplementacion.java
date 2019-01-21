@@ -1,17 +1,22 @@
 package estacionamiento.modelo.servicios;
 
+import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
+import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
+
 import estacionamiento.ObjetosJSON.Placa;
 import estacionamiento.ObjetosJSON.Vehiculo;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
 import estacionamiento.enumeraciones.TipoVehiculoEnum;
-import estacionamiento.modelo.interfaces.VehiculoInterface;
 import estacionamiento.modelo.entidad.VehiculoEntity;
+import estacionamiento.modelo.interfaces.VehiculoInterface;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.rmi.RemoteException;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,8 +24,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
 
+@Service
 public class VehiculoImplementacion implements VehiculoInterface {
 
     private static final String A = "A";
@@ -45,22 +50,18 @@ public class VehiculoImplementacion implements VehiculoInterface {
             ObjectMapper objectMapper = new ObjectMapper();
             Vehiculo vehiculo = objectMapper.readValue(body,Vehiculo.class);
 
-            String tipoVehiculo =  vehiculo.getTipoDeVehiculo();
-            String placa =  vehiculo.getPlaca();
-            int cilindraje = Integer.valueOf(vehiculo.getCilindraje());
-
-            if(validacionCapacidad(tipoVehiculo)){
-                return MessageFormat.format(PARQUEADERO_LLENO,tipoVehiculo);
+            if(validacionCapacidad(vehiculo.getTipoDeVehiculo())){
+                return MessageFormat.format(PARQUEADERO_LLENO,vehiculo.getTipoDeVehiculo());
             }
 
-            if(validacionDePrimeraLetra(placa)){
-                return MessageFormat.format(SIN_AUTORIZACION,placa);
+            if(validacionDePrimeraLetra(vehiculo.getPlaca())){
+                return MessageFormat.format(SIN_AUTORIZACION,vehiculo.getPlaca());
             }
 
-            if(persistenciaImplementacion.obtenerVehiculoEntity(placa) != null){
-                return MessageFormat.format(PLACA_REPETIDA,placa);
+            if(persistenciaImplementacion.obtenerVehiculoEntity(vehiculo.getPlaca()) != null){
+                return MessageFormat.format(PLACA_REPETIDA,vehiculo.getPlaca());
             }
-            return agregarVehiculo(tipoVehiculo, cilindraje, placa);
+            return agregarVehiculo(vehiculo.getTipoDeVehiculo(), Integer.valueOf(vehiculo.getCilindraje()), vehiculo.getPlaca());
         }catch (Exception e){
             return CREACION_FALLIDA;
         }
@@ -78,16 +79,24 @@ public class VehiculoImplementacion implements VehiculoInterface {
                 costo = calcularTotal(vehiculoEntity);
                 cambioDeEstadoVehiculo(vehiculoEntity,costo);
             }
+            return String.valueOf(costo);
         }catch (Exception e){
-
+            return String.valueOf(costo);
         }
-        return String.valueOf(costo);
     }
 
     @Override
     public String cargarPaginaInicial() {
         List<VehiculoEntity> listaDeVehiculos = persistenciaImplementacion.obtenerListaDeVehiculos();
         return crearJson(listaDeVehiculos);
+    }
+
+    @Override
+    public String obtenerTRM() throws RemoteException {
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+        TCRMServicesInterfaceProxy proxy = new TCRMServicesInterfaceProxy("https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL");
+        TcrmResponse tcrmResponse = proxy.queryTCRM(null);
+        return tcrmResponse.getValue() + " " + tcrmResponse.getUnit();
     }
 
     private String crearJson(List<VehiculoEntity> listaDeVehiculos){
@@ -128,7 +137,7 @@ public class VehiculoImplementacion implements VehiculoInterface {
         }
     }
 
-    public String agregarVehiculo(String tipoVehiculo, int cilindraje, String placa){
+    private String agregarVehiculo(String tipoVehiculo, int cilindraje, String placa){
         if(CARRO.equals(tipoVehiculo)){
             VehiculoEntity carro = new VehiculoEntity();
             carro.setCilindraje(cilindraje);

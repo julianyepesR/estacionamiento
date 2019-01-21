@@ -1,7 +1,6 @@
 package integracion;
 
 import dataBuilder.TestUtils;
-import estacionamiento.ObjetosJSON.Vehiculo;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
 import estacionamiento.enumeraciones.TipoVehiculoEnum;
 
@@ -30,7 +29,6 @@ public class MotoTest {
     private static final String PLACA_A = "AAA123";
     private static final String PLACA_B = "BBB123";
     private static final String PLACA_C = "CCC123";
-    private static final String PLACA_D = "DDD123";
     private static final int CILINDRAJE_MENOR = 500;
     private static final int CILINDRAJE_MAYOR = 501;
     private static final String TIPO_DE_VEHICULO = "Moto";
@@ -53,19 +51,18 @@ public class MotoTest {
         // arrange
         VehiculoImplementacion vehiculoImplementacion = new VehiculoImplementacion(persistenciaImplementacion);
         TestUtils testUtils = new TestUtils(persistenciaImplementacion);
-        VehiculoEntity vehiculoEntity = testUtils.crearVehiculo(TipoVehiculoEnum.MOTO,PLACA_C,CILINDRAJE_MAYOR,10,0);
-
+        VehiculoEntity vehiculoEntity = testUtils.crearVehiculo(TipoVehiculoEnum.MOTO,PLACA_C,CILINDRAJE_MENOR,10,0);
         String jsonData = "{\"tipoDeVehiculo\": \""+TIPO_DE_VEHICULO+"\",\"cilindraje\": \""+CILINDRAJE_MENOR+"\",\"placa\": \""+PLACA_B+"\"}";
+        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
 
         // act
-        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
         when(this.vehiculoPersistence.obtenerVehiculoPorPlaca(EstadoVehiculoEnum.EN_DEUDA,PLACA_B)).thenReturn(vehiculoEntity);
         VehiculoEntity vehiculoEntity1 = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_B);
 
         // assert
         assertEquals(vehiculoEntity1.getCilindraje(),CILINDRAJE_MENOR);
-        assertEquals(vehiculoEntity.getTipoDeVehiculo(), TipoVehiculoEnum.MOTO);
-        assertEquals(vehiculoEntity.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
+        assertEquals(vehiculoEntity1.getTipoDeVehiculo(), TipoVehiculoEnum.MOTO);
+        assertEquals(vehiculoEntity1.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
     }
 
     @Test
@@ -81,12 +78,7 @@ public class MotoTest {
         vehiculoImplementacion.ingresoDeVehiculo(jsonData);
         VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_A);
 
-        if( (diaActual == 1 || diaActual == 2) ){
-            // assert
-            assertEquals(vehiculoEntity.getCilindraje(),CILINDRAJE_MENOR);
-            assertEquals(vehiculoEntity.getTipoDeVehiculo(), TipoVehiculoEnum.MOTO);
-            assertEquals(vehiculoEntity.getEstadoActual(), EstadoVehiculoEnum.EN_DEUDA);
-        } else {
+        if( !(diaActual == 1 || diaActual == 2) ){
             // assert
             assertNull(vehiculoEntity);
         }
@@ -97,18 +89,15 @@ public class MotoTest {
         // arrange
         TestUtils testUtils = new TestUtils(persistenciaImplementacion);
         VehiculoImplementacion vehiculoImplementacion = new VehiculoImplementacion(persistenciaImplementacion);
-        testUtils.crearVehiculo(TipoVehiculoEnum.MOTO,PLACA_C,CILINDRAJE_MAYOR,10,0);
-        testUtils.crearVehiculo(TipoVehiculoEnum.MOTO,PLACA_D,CILINDRAJE_MENOR,2,1);
+        VehiculoEntity vehiculoEntity = testUtils.crearVehiculo(TipoVehiculoEnum.MOTO,PLACA_C,CILINDRAJE_MAYOR,10,0);
+        when(this.vehiculoPersistence.obtenerVehiculoPorPlaca(EstadoVehiculoEnum.EN_DEUDA,PLACA_C)).thenReturn(vehiculoEntity);
 
         // act
-        String jsonData1 = "{'placa': "+PLACA_C+"}";
-        String jsonData2 = "{'placa': "+PLACA_D+"}";
+        String jsonData1 = "{\"placa\": \""+PLACA_C+"\"}";
         String costo = vehiculoImplementacion.calcularCosto(jsonData1);
-        String costo2 = vehiculoImplementacion.calcularCosto(jsonData2);
 
         // assert
         assertEquals("6000",costo);
-        assertEquals("5000",costo2);
     }
 
     @Test
