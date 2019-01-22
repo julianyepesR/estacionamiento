@@ -23,7 +23,8 @@ public class PersistenciaImplementacion implements PersistenciaInterface {
     }
 
     @Override
-    public List<VehiculoEntity> obtenerListaDeVehiculos() {
+    public List<VehiculoEntity>
+    obtenerListaDeVehiculos() {
         return vehiculoPersistence.obtenerTodosLosVehiculos(EstadoVehiculoEnum.EN_DEUDA);
     }
 

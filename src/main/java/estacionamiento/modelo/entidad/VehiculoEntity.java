@@ -8,12 +8,6 @@ import java.util.Date;
 
 @Entity
 @Table(name="Vehiculo")
-@NamedQueries({
-        @NamedQuery(name = "Vehiculo.findAll", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.estadoActual = :estadoActual"),
-        @NamedQuery(name = "Vehiculo.findByPlaca", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.placa = :placa AND vehiculo.estadoActual = :estadoActual"),
-        @NamedQuery(name = "Vehiculo.findallMotos", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.tipoDeVehiculo = :tipoDeVehiculo AND vehiculo.estadoActual = :estadoActual"),
-        @NamedQuery(name = "Vehiculo.findallCarros", query = "SELECT vehiculo FROM VehiculoEntity vehiculo WHERE vehiculo.tipoDeVehiculo = :tipoDeVehiculo AND vehiculo.estadoActual = :estadoActual")
-})
 public class VehiculoEntity {
 
     @Id

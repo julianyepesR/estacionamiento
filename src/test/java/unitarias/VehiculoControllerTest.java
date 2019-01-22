@@ -1,33 +1,31 @@
 package unitarias;
 
 
-import estacionamiento.modelo.interfaces.VehiculoInterface;
+import estacionamiento.EstacionamientoApplication;
+import estacionamiento.modelo.servicios.PersistenciaImplementacion;
 import estacionamiento.modelo.servicios.VehiculoImplementacion;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = EstacionamientoApplication.class)
 public class VehiculoControllerTest {
 
     private static final String PLACA = "ASD123";
 
-    @Mock
-    private VehiculoInterface vehiculoInterface;
+    @Autowired
+    PersistenciaImplementacion persistenciaImplementacion;
 
-    @InjectMocks
-    private VehiculoImplementacion vehiculoImplementacion;
-
-    @Before
-    public void init(){
-        MockitoAnnotations.initMocks(this);
-    }
+    @Autowired
+    VehiculoImplementacion vehiculoImplementacion;
 
     @Test
     public void calculoDeDias(){

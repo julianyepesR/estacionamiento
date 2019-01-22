@@ -19,9 +19,7 @@ public class VehiculoController {
 	}
 
 	@PostMapping("/calcularCosto")
-	public String calcularCosto(@RequestBody String body) throws IOException {
-		return vehiculoInterface.calcularCosto(body);
-	}
+	public String calcularCosto(@RequestBody String body) { return vehiculoInterface.calcularCosto(body); }
 
 	@GetMapping("/")
     public String cargarPaginaInicial(){
