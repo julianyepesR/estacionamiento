@@ -22,12 +22,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 @Service
 @Component
 public class VehiculoImplementacion implements VehiculoInterface {
+    private static final Logger LOGGER = Logger.getLogger(VehiculoImplementacion.class.getName());
 
     @Autowired
     private PersistenciaImplementacion persistenciaImplementacion;
