@@ -1,4 +1,4 @@
-package estacionamiento.objetosJson;
+package estacionamiento.json;
 
 public class Vehiculo {
 

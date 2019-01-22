@@ -1,13 +1,13 @@
 package estacionamiento.constantes;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Constantes {
     public static final String A = "A";
     public static final String CARRO = "Carro";
+    public static final String CERO = "0";
     public static final String CREACION_EXITOSA = "El vehiculo con placas <b>{0}</b> ha ingresado al sistema exitosamente";
     public static final String CREACION_FALLIDA = "El vehiculo no ha ingresado al sistema, revise el formulario por favor";
+    public static final String ERROR_CREACION_VEHICULO = "Error al momento de agregar un vehiculo a la base de datos";
+    public static final String ERROR_TRM = "Error realizando la consulta del TRM";
     public static final String FECHA_INGRESO = "Fecha_Ingreso";
     public static final String FORMATO_DATE = "dd-MM-yyyy";
     public static final String ID = "id";
@@ -20,8 +20,5 @@ public class Constantes {
     public static final String TIPO = "Tipo";
     public static final String TRM_URL = "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL";
 
-    public static final String ERROR_CREACION_VEHICULO = "Error al momento de agregar un vehiculo a la base de datos";
-    public static final String ERROR_TRM = "Error realizando la consulta del TRM";
-    public static final String CERO = "0";
 
 }

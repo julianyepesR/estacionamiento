@@ -2,8 +2,8 @@ package estacionamiento.modelo.servicios;
 
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
-import estacionamiento.objetosJson.PlacaJson;
-import estacionamiento.objetosJson.Vehiculo;
+import estacionamiento.json.PlacaJson;
+import estacionamiento.json.Vehiculo;
 import estacionamiento.constantes.Constantes;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
 import estacionamiento.enumeraciones.TipoVehiculoEnum;
