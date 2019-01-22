@@ -2,10 +2,10 @@ package estacionamiento.controladores;
 
 import estacionamiento.modelo.interfaces.VehiculoInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.rmi.RemoteException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class VehiculoController {
@@ -14,7 +14,7 @@ public class VehiculoController {
 	private VehiculoInterface vehiculoInterface;
 
 	@PostMapping("/ingresoDeVehiculo")
-	public String ingresoDeVehiculo(@RequestBody String body) throws IOException {
+	public String ingresoDeVehiculo(@RequestBody String body) {
 		return vehiculoInterface.ingresoDeVehiculo(body);
 	}
 
@@ -27,6 +27,6 @@ public class VehiculoController {
     }
 
 	@GetMapping("/TRM")
-	public String obtenerTRM() throws RemoteException { return vehiculoInterface.obtenerTRM(); }
+	public String obtenerTRM() { return vehiculoInterface.obtenerTRM(); }
 
 }

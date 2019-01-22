@@ -1,6 +1,6 @@
-package estacionamiento.ObjetosJSON;
+package estacionamiento.ObjetosJson;
 
-public class Placa {
+public class PlacaJson {
 
     private String placa;
 

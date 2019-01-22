@@ -2,8 +2,8 @@ package estacionamiento.modelo.servicios;
 
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
-import estacionamiento.ObjetosJSON.Placa;
-import estacionamiento.ObjetosJSON.Vehiculo;
+import estacionamiento.ObjetosJson.PlacaJson;
+import estacionamiento.ObjetosJson.Vehiculo;
 import estacionamiento.constantes.Constantes;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
 import estacionamiento.enumeraciones.TipoVehiculoEnum;
@@ -16,13 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.rmi.RemoteException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 @Service
 @Component
@@ -53,6 +54,7 @@ public class VehiculoImplementacion implements VehiculoInterface {
             }
             return agregarVehiculo(vehiculo.getTipoDeVehiculo(), Integer.valueOf(vehiculo.getCilindraje()), vehiculo.getPlaca());
         }catch (Exception e){
+            LOGGER.info(constantes.ERROR_CREACION_VEHICULO + "\n" + e);
             return constantes.CREACION_FALLIDA;
         }
     }
@@ -62,15 +64,16 @@ public class VehiculoImplementacion implements VehiculoInterface {
         long costo = 0;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            Placa placa = objectMapper.readValue(body,Placa.class);
+            PlacaJson placaJson = objectMapper.readValue(body, PlacaJson.class);
 
-            VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(placa.getPlaca());
+            VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(placaJson.getPlaca());
             if(vehiculoEntity!=null){
                 costo = calcularTotal(vehiculoEntity);
                 cambioDeEstadoVehiculo(vehiculoEntity,costo);
             }
             return String.valueOf(costo);
         }catch (Exception e){
+            LOGGER.info(constantes.ERROR_CREACION_VEHICULO + "\n" + e);
             return String.valueOf(costo);
         }
     }
@@ -82,10 +85,15 @@ public class VehiculoImplementacion implements VehiculoInterface {
     }
 
     @Override
-    public String obtenerTRM() throws RemoteException {
-        TCRMServicesInterfaceProxy proxy = new TCRMServicesInterfaceProxy(constantes.TRM_URL);
-        TcrmResponse tcrmResponse = proxy.queryTCRM(null);
-        return tcrmResponse.getValue() + " " + tcrmResponse.getUnit();
+    public String obtenerTRM(){
+        try{
+            TCRMServicesInterfaceProxy proxy = new TCRMServicesInterfaceProxy(constantes.TRM_URL);
+            TcrmResponse tcrmResponse = proxy.queryTCRM(null);
+            return tcrmResponse.getValue() + " " + tcrmResponse.getUnit();
+        }catch (Exception e){
+            LOGGER.info(constantes.ERROR_TRM + "\n" + e);
+            return constantes.CERO;
+        }
     }
 
     private String crearJson(List<VehiculoEntity> listaDeVehiculos){
