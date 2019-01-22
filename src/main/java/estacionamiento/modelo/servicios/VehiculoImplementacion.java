@@ -2,8 +2,8 @@ package estacionamiento.modelo.servicios;
 
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
-import estacionamiento.ObjetosJson.PlacaJson;
-import estacionamiento.ObjetosJson.Vehiculo;
+import estacionamiento.objetosJson.PlacaJson;
+import estacionamiento.objetosJson.Vehiculo;
 import estacionamiento.constantes.Constantes;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
 import estacionamiento.enumeraciones.TipoVehiculoEnum;
@@ -32,9 +32,6 @@ public class VehiculoImplementacion implements VehiculoInterface {
     @Autowired
     private PersistenciaImplementacion persistenciaImplementacion;
 
-    @Autowired
-    private Constantes constantes;
-
     @Override
     public String ingresoDeVehiculo(String body) {
         try{
@@ -42,20 +39,20 @@ public class VehiculoImplementacion implements VehiculoInterface {
             Vehiculo vehiculo = objectMapper.readValue(body,Vehiculo.class);
 
             if(validacionCapacidad(vehiculo.getTipoDeVehiculo())){
-                return MessageFormat.format(constantes.PARQUEADERO_LLENO,vehiculo.getTipoDeVehiculo());
+                return MessageFormat.format(Constantes.PARQUEADERO_LLENO,vehiculo.getTipoDeVehiculo());
             }
 
             if(validacionDePrimeraLetra(vehiculo.getPlaca())){
-                return MessageFormat.format(constantes.SIN_AUTORIZACION,vehiculo.getPlaca());
+                return MessageFormat.format(Constantes.SIN_AUTORIZACION,vehiculo.getPlaca());
             }
 
             if(persistenciaImplementacion.obtenerVehiculoEntity(vehiculo.getPlaca()) != null){
-                return MessageFormat.format(constantes.PLACA_REPETIDA,vehiculo.getPlaca());
+                return MessageFormat.format(Constantes.PLACA_REPETIDA,vehiculo.getPlaca());
             }
             return agregarVehiculo(vehiculo.getTipoDeVehiculo(), Integer.valueOf(vehiculo.getCilindraje()), vehiculo.getPlaca());
         }catch (Exception e){
-            LOGGER.info(constantes.ERROR_CREACION_VEHICULO + "\n" + e);
-            return constantes.CREACION_FALLIDA;
+            LOGGER.info(Constantes.ERROR_CREACION_VEHICULO + "\n" + e);
+            return Constantes.CREACION_FALLIDA;
         }
     }
 
@@ -73,7 +70,7 @@ public class VehiculoImplementacion implements VehiculoInterface {
             }
             return String.valueOf(costo);
         }catch (Exception e){
-            LOGGER.info(constantes.ERROR_CREACION_VEHICULO + "\n" + e);
+            LOGGER.info(Constantes.ERROR_CREACION_VEHICULO + "\n" + e);
             return String.valueOf(costo);
         }
     }
@@ -87,28 +84,28 @@ public class VehiculoImplementacion implements VehiculoInterface {
     @Override
     public String obtenerTRM(){
         try{
-            TCRMServicesInterfaceProxy proxy = new TCRMServicesInterfaceProxy(constantes.TRM_URL);
+            TCRMServicesInterfaceProxy proxy = new TCRMServicesInterfaceProxy(Constantes.TRM_URL);
             TcrmResponse tcrmResponse = proxy.queryTCRM(null);
             return tcrmResponse.getValue() + " " + tcrmResponse.getUnit();
         }catch (Exception e){
-            LOGGER.info(constantes.ERROR_TRM + "\n" + e);
-            return constantes.CERO;
+            LOGGER.info(Constantes.ERROR_TRM + "\n" + e);
+            return Constantes.CERO;
         }
     }
 
     private String crearJson(List<VehiculoEntity> listaDeVehiculos){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(constantes.FORMATO_DATE);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATE);
         HashMap<String, JSONObject> map = new HashMap<>();
         JSONArray arr = new JSONArray();
         int id = 1;
         for(VehiculoEntity vehiculo : listaDeVehiculos) {
             JSONObject jsonObj=new JSONObject();
-            jsonObj.put(constantes.ID, id);
-            jsonObj.put(constantes.PLACA, vehiculo.getPlaca());
-            jsonObj.put(constantes.TIPO, vehiculo.getTipoDeVehiculo().getTipoDeVehiculo());
-            jsonObj.put(constantes.FECHA_INGRESO,simpleDateFormat.format(vehiculo.getFechaDeEntrada()));
-            map.put(constantes.JSON + id, jsonObj);
-            arr.put(map.get(constantes.JSON + id));
+            jsonObj.put(Constantes.ID, id);
+            jsonObj.put(Constantes.PLACA, vehiculo.getPlaca());
+            jsonObj.put(Constantes.TIPO, vehiculo.getTipoDeVehiculo().getTipoDeVehiculo());
+            jsonObj.put(Constantes.FECHA_INGRESO,simpleDateFormat.format(vehiculo.getFechaDeEntrada()));
+            map.put(Constantes.JSON + id, jsonObj);
+            arr.put(map.get(Constantes.JSON + id));
             id++;
         }
         return arr.toString();
@@ -119,7 +116,7 @@ public class VehiculoImplementacion implements VehiculoInterface {
         calendar.setTime(new Date());
         int diaActual = calendar.get(Calendar.DAY_OF_WEEK);
         String primeraLetra = placa.substring(0,1);
-        if(constantes.A.equalsIgnoreCase(primeraLetra)){
+        if(Constantes.A.equalsIgnoreCase(primeraLetra)){
             return !(diaActual == 1 || diaActual == 2);
         }else{
             return false;
@@ -127,7 +124,7 @@ public class VehiculoImplementacion implements VehiculoInterface {
     }
 
     public Boolean validacionCapacidad(String tipoDeVehiculo){
-        if(constantes.CARRO.equals(tipoDeVehiculo)){
+        if(Constantes.CARRO.equals(tipoDeVehiculo)){
             return persistenciaImplementacion.obtenerListaDeCarros().size()==20;
         }else{
             return persistenciaImplementacion.obtenerListaDeMotos().size()==10;
@@ -135,7 +132,7 @@ public class VehiculoImplementacion implements VehiculoInterface {
     }
 
     private String agregarVehiculo(String tipoVehiculo, int cilindraje, String placa){
-        if(constantes.CARRO.equals(tipoVehiculo)){
+        if(Constantes.CARRO.equals(tipoVehiculo)){
             VehiculoEntity carro = new VehiculoEntity();
             carro.setCilindraje(cilindraje);
             carro.setPlaca(placa);
@@ -143,8 +140,8 @@ public class VehiculoImplementacion implements VehiculoInterface {
             carro.setFechaDeEntrada(new Date());
             carro.setEstadoActual(EstadoVehiculoEnum.EN_DEUDA);
             persistenciaImplementacion.agregarVehiculo(carro);
-            return MessageFormat.format(constantes.CREACION_EXITOSA,placa);
-        } else if(constantes.MOTO.equals(tipoVehiculo)){
+            return MessageFormat.format(Constantes.CREACION_EXITOSA,placa);
+        } else if(Constantes.MOTO.equals(tipoVehiculo)){
             VehiculoEntity moto = new VehiculoEntity();
             moto.setCilindraje(cilindraje);
             moto.setPlaca(placa);
@@ -152,9 +149,9 @@ public class VehiculoImplementacion implements VehiculoInterface {
             moto.setFechaDeEntrada(new Date());
             moto.setEstadoActual(EstadoVehiculoEnum.EN_DEUDA);
             persistenciaImplementacion.agregarVehiculo(moto);
-            return MessageFormat.format(constantes.CREACION_EXITOSA,placa);
+            return MessageFormat.format(Constantes.CREACION_EXITOSA,placa);
         } else {
-            return constantes.CREACION_FALLIDA;
+            return Constantes.CREACION_FALLIDA;
         }
     }
 

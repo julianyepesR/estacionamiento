@@ -1,7 +1,5 @@
 package integracion;
 
-import estacionamiento.constantes.Constantes;
-import testUtils.TestUtils;
 import estacionamiento.EstacionamientoApplication;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
 import estacionamiento.enumeraciones.TipoVehiculoEnum;
@@ -14,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import testUtils.TestUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -33,9 +31,6 @@ public class CarroTest {
     private static final String TIPO_DE_VEHICULO = "Carro";
 
     TestUtils testUtils;
-
-    @Autowired
-    Constantes constantes;
 
     @Autowired
     PersistenciaImplementacion persistenciaImplementacion;
