@@ -1,5 +1,8 @@
 package estacionamiento.constantes;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Constantes {
     public final String A = "A";
     public final String CARRO = "Carro";

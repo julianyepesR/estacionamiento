@@ -1,5 +1,6 @@
 package integracion;
 
+import estacionamiento.constantes.Constantes;
 import testUtils.TestUtils;
 import estacionamiento.EstacionamientoApplication;
 import estacionamiento.enumeraciones.EstadoVehiculoEnum;
@@ -33,6 +34,9 @@ public class MotoTest {
     private static final String CARRO = "Carro";
 
     TestUtils testUtils;
+
+    @Autowired
+    Constantes constantes;
 
     @Autowired
     PersistenciaImplementacion persistenciaImplementacion;
