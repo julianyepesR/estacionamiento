@@ -1,4 +1,4 @@
-package estacionamiento.enumeraciones;
+package estacionamiento.transversal.enumeraciones;
 
 public enum TipoVehiculoEnum {
 	CARRO("Carro"),MOTO("Moto");

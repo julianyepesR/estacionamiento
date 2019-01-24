@@ -1,19 +1,19 @@
-package estacionamiento.modelo.servicios;
+package estacionamiento.negocio.helpers;
 
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TCRMServicesInterfaceProxy;
 import co.com.sc.nexura.superfinanciera.action.generic.services.trm.action.TcrmResponse;
-import estacionamiento.json.PlacaJson;
-import estacionamiento.json.Vehiculo;
-import estacionamiento.constantes.Constantes;
-import estacionamiento.enumeraciones.EstadoVehiculoEnum;
-import estacionamiento.enumeraciones.TipoVehiculoEnum;
-import estacionamiento.modelo.entidad.VehiculoEntity;
-import estacionamiento.modelo.interfaces.VehiculoInterface;
+import estacionamiento.modelo.dao.servicios.PersistenciaImplementacion;
+import estacionamiento.modelo.entidades.VehiculoEntity;
+import estacionamiento.negocio.interfaces.VehiculoInterface;
+import estacionamiento.transversal.constantes.Constantes;
+import estacionamiento.transversal.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.transversal.enumeraciones.TipoVehiculoEnum;
+import estacionamiento.transversal.vo.PlacaVO;
+import estacionamiento.transversal.vo.VehiculoVO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -25,9 +25,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
-@Component
-public class VehiculoImplementacion implements VehiculoInterface {
-    private static final Logger LOGGER = Logger.getLogger(VehiculoImplementacion.class.getName());
+public class VehiculoIHelper implements VehiculoInterface {
+    private static final Logger LOGGER = Logger.getLogger(VehiculoIHelper.class.getName());
 
     @Autowired
     private PersistenciaImplementacion persistenciaImplementacion;
@@ -36,20 +35,17 @@ public class VehiculoImplementacion implements VehiculoInterface {
     public String ingresoDeVehiculo(String body) {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
-            Vehiculo vehiculo = objectMapper.readValue(body,Vehiculo.class);
-
-            if(validacionCapacidad(vehiculo.getTipoDeVehiculo())){
-                return MessageFormat.format(Constantes.PARQUEADERO_LLENO,vehiculo.getTipoDeVehiculo());
+            VehiculoVO vehiculoVO = objectMapper.readValue(body, VehiculoVO.class);
+            if(validacionCapacidad(vehiculoVO.getTipoDeVehiculo())){
+                return MessageFormat.format(Constantes.PARQUEADERO_LLENO, vehiculoVO.getTipoDeVehiculo());
             }
-
-            if(validacionDePrimeraLetra(vehiculo.getPlaca())){
-                return MessageFormat.format(Constantes.SIN_AUTORIZACION,vehiculo.getPlaca());
+            if(validacionDePrimeraLetra(vehiculoVO.getPlaca())){
+                return MessageFormat.format(Constantes.SIN_AUTORIZACION, vehiculoVO.getPlaca());
             }
-
-            if(persistenciaImplementacion.obtenerVehiculoEntity(vehiculo.getPlaca()) != null){
-                return MessageFormat.format(Constantes.PLACA_REPETIDA,vehiculo.getPlaca());
+            if(persistenciaImplementacion.obtenerVehiculoEntity(vehiculoVO.getPlaca()) != null){
+                return MessageFormat.format(Constantes.PLACA_REPETIDA, vehiculoVO.getPlaca());
             }
-            return agregarVehiculo(vehiculo.getTipoDeVehiculo(), Integer.valueOf(vehiculo.getCilindraje()), vehiculo.getPlaca());
+            return agregarVehiculo(vehiculoVO.getTipoDeVehiculo(), Integer.valueOf(vehiculoVO.getCilindraje()), vehiculoVO.getPlaca());
         }catch (Exception e){
             LOGGER.info(Constantes.ERROR_CREACION_VEHICULO + "\n" + e);
             return Constantes.CREACION_FALLIDA;
@@ -61,9 +57,9 @@ public class VehiculoImplementacion implements VehiculoInterface {
         long costo = 0;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            PlacaJson placaJson = objectMapper.readValue(body, PlacaJson.class);
+            PlacaVO placaVO = objectMapper.readValue(body, PlacaVO.class);
 
-            VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(placaJson.getPlaca());
+            VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(placaVO.getPlaca());
             if(vehiculoEntity!=null){
                 costo = calcularTotal(vehiculoEntity);
                 cambioDeEstadoVehiculo(vehiculoEntity,costo);

@@ -1,6 +1,6 @@
-package estacionamiento.controladores;
+package estacionamiento.negocio.controladores;
 
-import estacionamiento.modelo.interfaces.VehiculoInterface;
+import estacionamiento.negocio.interfaces.VehiculoInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

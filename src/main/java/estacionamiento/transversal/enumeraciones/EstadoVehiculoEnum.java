@@ -1,4 +1,4 @@
-package estacionamiento.enumeraciones;
+package estacionamiento.transversal.enumeraciones;
 
 public enum EstadoVehiculoEnum {
 	EN_DEUDA("En el parqueadero"), FUERA("Fuera del parqueadero");

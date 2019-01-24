@@ -2,8 +2,8 @@ package unitarias;
 
 
 import estacionamiento.EstacionamientoApplication;
-import estacionamiento.modelo.servicios.PersistenciaImplementacion;
-import estacionamiento.modelo.servicios.VehiculoImplementacion;
+import estacionamiento.modelo.dao.servicios.PersistenciaImplementacion;
+import estacionamiento.negocio.helpers.VehiculoIHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EstacionamientoApplication.class)
-public class VehiculoControllerTest {
+public class VehiculoVOControllerTest {
 
     private static final String PLACA = "ASD123";
 
@@ -25,13 +25,13 @@ public class VehiculoControllerTest {
     PersistenciaImplementacion persistenciaImplementacion;
 
     @Autowired
-    VehiculoImplementacion vehiculoImplementacion;
+    VehiculoIHelper vehiculoIHelper;
 
     @Test
     public void calculoDeDias(){
         //act
-        long unDia = vehiculoImplementacion.calcularDias(25);
-        long dosDias = vehiculoImplementacion.calcularDias(33);
+        long unDia = vehiculoIHelper.calcularDias(25);
+        long dosDias = vehiculoIHelper.calcularDias(33);
 
         //assert
         assertEquals(1,unDia);
@@ -41,8 +41,8 @@ public class VehiculoControllerTest {
     @Test
     public void calculoDeHoras(){
         //act
-        long seisHoras = vehiculoImplementacion.calcularHoras(30);
-        long dosHoras = vehiculoImplementacion.calcularHoras(50);
+        long seisHoras = vehiculoIHelper.calcularHoras(30);
+        long dosHoras = vehiculoIHelper.calcularHoras(50);
 
         //assert
         assertEquals(6,seisHoras);
@@ -57,7 +57,7 @@ public class VehiculoControllerTest {
         int diaActual = calendar.get(Calendar.DAY_OF_WEEK);
 
         //act
-        Boolean validacion = vehiculoImplementacion.validacionDePrimeraLetra(PLACA);
+        Boolean validacion = vehiculoIHelper.validacionDePrimeraLetra(PLACA);
 
         if( (diaActual == 1 || diaActual == 2) ){
             // assert

@@ -1,6 +1,6 @@
-package estacionamiento.modelo.interfaces;
+package estacionamiento.modelo.dao.interfaces;
 
-import estacionamiento.modelo.entidad.VehiculoEntity;
+import estacionamiento.modelo.entidades.VehiculoEntity;
 
 import java.util.List;
 

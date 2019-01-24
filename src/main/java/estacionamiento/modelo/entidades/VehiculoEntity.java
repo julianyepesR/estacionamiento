@@ -1,7 +1,7 @@
-package estacionamiento.modelo.entidad;
+package estacionamiento.modelo.entidades;
 
-import estacionamiento.enumeraciones.EstadoVehiculoEnum;
-import estacionamiento.enumeraciones.TipoVehiculoEnum;
+import estacionamiento.transversal.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.transversal.enumeraciones.TipoVehiculoEnum;
 
 import javax.persistence.*;
 import java.util.Date;

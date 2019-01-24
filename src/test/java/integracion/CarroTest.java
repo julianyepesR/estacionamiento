@@ -1,11 +1,11 @@
 package integracion;
 
 import estacionamiento.EstacionamientoApplication;
-import estacionamiento.enumeraciones.EstadoVehiculoEnum;
-import estacionamiento.enumeraciones.TipoVehiculoEnum;
-import estacionamiento.modelo.entidad.VehiculoEntity;
-import estacionamiento.modelo.servicios.PersistenciaImplementacion;
-import estacionamiento.modelo.servicios.VehiculoImplementacion;
+import estacionamiento.transversal.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.transversal.enumeraciones.TipoVehiculoEnum;
+import estacionamiento.modelo.entidades.VehiculoEntity;
+import estacionamiento.modelo.dao.servicios.PersistenciaImplementacion;
+import estacionamiento.negocio.helpers.VehiculoIHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class CarroTest {
     PersistenciaImplementacion persistenciaImplementacion;
 
     @Autowired
-    VehiculoImplementacion vehiculoImplementacion;
+    VehiculoIHelper vehiculoIHelper;
 
     @Before
     public void iniciar(){
@@ -48,7 +48,7 @@ public class CarroTest {
     public void agregarCarro(){
         // arrange
         String jsonData = "{\"tipoDeVehiculo\": \""+TIPO_DE_VEHICULO+"\",\"cilindraje\": \""+CILINDRAJE+"\",\"placa\": \""+PLACA_B+"\"}";
-        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
+        vehiculoIHelper.ingresoDeVehiculo(jsonData);
 
         // act
         VehiculoEntity vehiculoEntityTest = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_B);
@@ -68,7 +68,7 @@ public class CarroTest {
 
         // act
         String jsonData = "{\"tipoDeVehiculo\": \""+TIPO_DE_VEHICULO+"\",\"cilindraje\": \""+CILINDRAJE+"\",\"placa\": \""+PLACA_A+"\"}";
-        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
+        vehiculoIHelper.ingresoDeVehiculo(jsonData);
         VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_A);
 
         if( (diaActual == 1 || diaActual == 2) ){
@@ -89,7 +89,7 @@ public class CarroTest {
 
         // act
         String jsonData1 = "{\"placa\": \""+PLACA_C+"\"}";
-        String costo = vehiculoImplementacion.calcularCosto(jsonData1);
+        String costo = vehiculoIHelper.calcularCosto(jsonData1);
         VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_C);
 
         // assert
@@ -105,7 +105,7 @@ public class CarroTest {
 
         // act
         String jsonData = "{\"tipoDeVehiculo\": \""+TIPO_DE_VEHICULO+"\",\"cilindraje\": \""+CILINDRAJE+"\",\"placa\": \""+PLACA_D+"\"}";
-        vehiculoImplementacion.ingresoDeVehiculo(jsonData);
+        vehiculoIHelper.ingresoDeVehiculo(jsonData);
         VehiculoEntity vehiculoEntity = persistenciaImplementacion.obtenerVehiculoEntity(PLACA_D);
 
         // assert
@@ -119,10 +119,21 @@ public class CarroTest {
         testUtils.llenarParqueadero(TipoVehiculoEnum.MOTO);
 
         // act
-        String listadoJson = vehiculoImplementacion.cargarPaginaInicial();
+        String listadoJson = vehiculoIHelper.cargarPaginaInicial();
         System.out.println(listadoJson);
 
         // assert
         assertTrue(!"".equals(listadoJson));
+    }
+
+    @Test
+    public void obtenerTRM(){
+        // arrange
+
+        // act
+        String trm = vehiculoIHelper.obtenerTRM();
+        // assert
+
+        assertTrue(!"".equals(trm));
     }
 }

@@ -1,4 +1,4 @@
-package estacionamiento.constantes;
+package estacionamiento.transversal.constantes;
 
 public class Constantes {
     public static final String A = "A";
@@ -13,12 +13,10 @@ public class Constantes {
     public static final String ID = "id";
     public static final String JSON = "json";
     public static final String MOTO = "Moto";
-    public static final String PLACA = "PlacaJson";
+    public static final String PLACA = "Placa";
     public static final String PLACA_REPETIDA = "El vehiculo con placas <b>{0}</b> ya se encuentra en el estacionamiento";
     public static final String PARQUEADERO_LLENO = "Parqueradero lleno, no es posible ingresar otro vehiculo de tipo {0}";
     public static final String SIN_AUTORIZACION = "El vehiculo con placas <b>{0}</b> no está autorizada para ingresar al estacionamiento";
     public static final String TIPO = "Tipo";
     public static final String TRM_URL = "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL";
-
-
 }

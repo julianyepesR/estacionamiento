@@ -1,4 +1,4 @@
-package estacionamiento.modelo.interfaces;
+package estacionamiento.negocio.interfaces;
 
 public interface VehiculoInterface {
 

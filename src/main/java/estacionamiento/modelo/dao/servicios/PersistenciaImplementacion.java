@@ -1,10 +1,10 @@
-package estacionamiento.modelo.servicios;
+package estacionamiento.modelo.dao.servicios;
 
-import estacionamiento.enumeraciones.EstadoVehiculoEnum;
-import estacionamiento.enumeraciones.TipoVehiculoEnum;
-import estacionamiento.modelo.entidad.VehiculoEntity;
-import estacionamiento.modelo.interfaces.PersistenciaInterface;
-import estacionamiento.modelo.repositorio.VehiculoPersistence;
+import estacionamiento.transversal.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.transversal.enumeraciones.TipoVehiculoEnum;
+import estacionamiento.modelo.entidades.VehiculoEntity;
+import estacionamiento.modelo.dao.interfaces.PersistenciaInterface;
+import estacionamiento.modelo.interfaces.VehiculoPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

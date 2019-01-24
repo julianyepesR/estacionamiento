@@ -1,6 +1,6 @@
-package estacionamiento.json;
+package estacionamiento.transversal.vo;
 
-public class PlacaJson {
+public class PlacaVO {
 
     private String placa;
 

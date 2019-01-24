@@ -1,9 +1,9 @@
 package testUtils;
 
-import estacionamiento.enumeraciones.EstadoVehiculoEnum;
-import estacionamiento.enumeraciones.TipoVehiculoEnum;
-import estacionamiento.modelo.entidad.VehiculoEntity;
-import estacionamiento.modelo.servicios.PersistenciaImplementacion;
+import estacionamiento.transversal.enumeraciones.EstadoVehiculoEnum;
+import estacionamiento.transversal.enumeraciones.TipoVehiculoEnum;
+import estacionamiento.modelo.entidades.VehiculoEntity;
+import estacionamiento.modelo.dao.servicios.PersistenciaImplementacion;
 
 import java.util.Calendar;
 import java.util.Date;
